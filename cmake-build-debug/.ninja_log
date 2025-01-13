@@ -1,0 +1,6 @@
+# ninja log v6
+21	1698	7585119375649817	CMakeFiles/programacao_concorrente.dir/main.c.obj	70e24d05213eb941
+30	143	7585127971240014	programacao_concorrente.exe	a8635566e336845a
+2	349	7585128676690540	build.ninja	a06474b978b12760
+8	206	7585126053225002	CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj	685e053ffc432670
+4	117	7585127071179963	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	13970964fed6ee55

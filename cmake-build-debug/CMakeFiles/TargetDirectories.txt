@@ -1,0 +1,3 @@
+C:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/cmake-build-debug/CMakeFiles/programacao_concorrente.dir
+C:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/cmake-build-debug/CMakeFiles/rebuild_cache.dir
