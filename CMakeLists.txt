@@ -3,7 +3,10 @@ project(programacao_concorrente C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(programacao_concorrente src/gestao-estoque.c
-        src/atendimento.c
-        src/pedidos-delivery.c)
+add_executable(programacao_concorrente src/atendimento.h
+        src/gestao-pedidos.h
+        src/atendimento.h
+        src/gestao-estoque.h
+        src/pedidos-delivery.h
+        src/reserva-mesa.h)
 
