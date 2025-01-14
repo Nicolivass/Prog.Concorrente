@@ -3,10 +3,15 @@ project(programacao_concorrente C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(programacao_concorrente src/atendimento.h
-        src/gestao-pedidos.h
-        src/atendimento.h
-        src/gestao-estoque.h
-        src/pedidos-delivery.h
-        src/reserva-mesa.h)
+set(SOURCES
+        main.c
+        gestao_pedidos.c
+        gestao_estoque.c
+        reserva_mesa.c
+        atendimento.c
+        pedidos-delivery.c)
+
+add_executable(programacao_concorrente ${SOURCES})
+
+target_compile_options(programacao_concorrente PRIVATE -Wall -pthread)
 
