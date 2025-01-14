@@ -5,14 +5,12 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#include "gestao_pedidos.h"
-#include "controle_estoque.h"
-#include "reserva_mesa.h"
+#include "gestao-pedidos.h"
+#include "gestao-estoque.h"
+#include "reserva-mesa.h"
 #include "atendimento.h"
 #include "pedidos-delivery.h"
 
-// Inclua os módulos implementados anteriormente
-// Exemplos: gestao_pedidos.h, controle_estoque.h, reserva_mesas.h, atendimento_multifila.h, distribuicao_pedidos.h
 
 // Recursos compartilhados globais
 FilaPedidos fila_pedidos;        // Para pedidos prontos
@@ -43,15 +41,15 @@ int main() {
 
     // Cria threads para os subsistemas
     ids[0] = 0;
-    pthread_create(&threads[0], NULL, gestao_pedidos, (void*)&ids[0]);
+    pthread_create(&threads[0], NULL, gestao-pedidos, (void*)&ids[0]);
     ids[1] = 0;
-    pthread_create(&threads[1], NULL, controle_estoque, (void*)&ids[1]);
+    pthread_create(&threads[1], NULL, gestao-estoque, (void*)&ids[1]);
     ids[2] = 0;
-    pthread_create(&threads[2], NULL, reserva_mesas, (void*)&ids[2]);
+    pthread_create(&threads[2], NULL, reserva-mesa, (void*)&ids[2]);
     ids[3] = 0;
-    pthread_create(&threads[3], NULL, atendimento_multifila, (void*)&ids[3]);
+    pthread_create(&threads[3], NULL, atendimento, (void*)&ids[3]);
     ids[4] = 0;
-    pthread_create(&threads[4], NULL, distribuicao_pedidos, (void*)&ids[4]);
+    pthread_create(&threads[4], NULL, pedidos-delivery, (void*)&ids[4]);
 
     // Simula a chegada de novos pedidos periodicamente
     for (int i = 0; i < 50; i++) {
