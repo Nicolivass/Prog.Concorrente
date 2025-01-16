@@ -1,12 +1,13 @@
 # ninja log v6
 21	1698	7585119375649817	CMakeFiles/programacao_concorrente.dir/main.c.obj	70e24d05213eb941
-4	448	7586962817957542	build.ninja	a06474b978b12760
-40	218	7586962681877727	programacao_concorrente.exe	f0c18a5b8de5d32d
-97	361	7586958843899607	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	43ad55bfb2d5e273
+174	325	7586974950191287	programacao_concorrente.exe	4bb2f8c242e45c4a
+6	454	7586976747937975	build.ninja	a06474b978b12760
 86	374	7586958843799521	CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj	9a60a0233f07d456
-105	364	7586958843990492	CMakeFiles/programacao_concorrente.dir/src/reserva-mesa.c.obj	661993954c1495e3
+97	361	7586958843899607	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	43ad55bfb2d5e273
 59	284	7585193988645582	CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj	a1e755923c584b44
+29	173	7586974948749304	CMakeFiles/programacao_concorrente.dir/src/reserva-mesa.c.obj	661993954c1495e3
 53	273	7585193988570880	CMakeFiles/programacao_concorrente.dir/src/atendimento.c.obj	e2dba6a9429bac5d
 10	181	7586961536688914	CMakeFiles/programacao_concorrente.dir/src/main.c.obj	a65978c72d5584c3
-4	478	7586962817957542	build.ninja	a06474b978b12760
-26	167	7586962819655639	programacao_concorrente.exe	a8635566e336845a
+3	417	7586976747937975	build.ninja	a06474b978b12760
+48	185	7586976749681707	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	43ad55bfb2d5e273
+186	350	7586976751063266	programacao_concorrente.exe	a8635566e336845a
