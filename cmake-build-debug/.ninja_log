@@ -1,14 +1,10 @@
 # ninja log v6
 21	1698	7585119375649817	CMakeFiles/programacao_concorrente.dir/main.c.obj	70e24d05213eb941
 30	143	7585127971240014	programacao_concorrente.exe	a8635566e336845a
-2	349	7585193986902497	build.ninja	a06474b978b12760
-8	206	7585126053225002	CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj	685e053ffc432670
-4	117	7585127071179963	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	13970964fed6ee55
-12	151	7585135706509055	CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj	b530ee056d099eda
-6	154	7585135706447133	CMakeFiles/programacao_concorrente.dir/src/atendimento.c.obj	2cfc0958dde68ac6
-3	404	7585193986902497	build.ninja	a06474b978b12760
-41	243	7585193988463370	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	43ad55bfb2d5e273
+3	404	7586898752040077	build.ninja	a06474b978b12760
 34	251	7585193988392793	CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj	9a60a0233f07d456
+41	243	7585193988463370	CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj	43ad55bfb2d5e273
+59	284	7585193988645582	CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj	a1e755923c584b44
 47	261	7585193988510793	CMakeFiles/programacao_concorrente.dir/src/reserva-mesa.c.obj	661993954c1495e3
 53	273	7585193988570880	CMakeFiles/programacao_concorrente.dir/src/atendimento.c.obj	e2dba6a9429bac5d
-59	284	7585193988645582	CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj	a1e755923c584b44
+90	389	7586906532991825	CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj	9a60a0233f07d456

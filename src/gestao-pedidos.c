@@ -7,104 +7,105 @@
 #include <semaphore.h>
 #include <unistd.h>
 
-#define MAX_PEDIDOS 10  // tamanho máximo da fila
+#define MAX_PEDIDOS 10
+// máximo da fila de pedidos
 
 typedef struct {
-    int priority;
-    int order_id;
-} Order;
+    int prioridade;
+    int id_pedido;
+} Pedido; //pedido com id e prioridade
 
-Order queue[MAX_PEDIDOS];
-int count = 0;  // Número de pedidos na fila
+Pedido queue[MAX_PEDIDOS]; //cria fila com pedidos
+int cont = 0;  // n° de pedidos atualmente na fila
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-sem_t sem_empty;
-sem_t sem_full;
+sem_t sem_vazio; //sem que indica que fila ta vazia
+sem_t sem_cheio; //sem que indica que fila ta cheia
 
-// Função para adicionar pedido à fila
-void enqueue(Order order) {
-    int i = count - 1;
-    while (i >= 0 && queue[i].priority < order.priority) {
+// adicionar pedido na fila de forma decrescente
+void adicionar(Pedido pedido) {
+    int i = cont - 1;
+    while (i >= 0 && queue[i].prioridade < pedido.prioridade) {
         queue[i + 1] = queue[i];
         i--;
     }
-    queue[i + 1] = order;
-    count++;
+    queue[i + 1] = pedido;
+    cont++;
 }
 
-// Função para remover pedido da fila
-Order dequeue() {
-    Order order = queue[0];
-    for (int i = 0; i < count - 1; i++) {
+// remover pedido com maior prioridade da fila
+Pedido remover() {
+    Pedido pedido = queue[0];
+    for (int i = 0; i < cont - 1; i++) {
         queue[i] = queue[i + 1];
     }
-    count--;
-    return order;
+    cont--;
+    return pedido;
 }
 
-// Função da thread produtora (chef criando pedidos)
-void* producer(void* arg) {
+// atendente criando pedidos
+void* criar(void* arg) {
     int id = *(int*)arg;
     for (int i = 0; i < 5; i++) {
-        Order order = {rand() % 10 + 1, id * 100 + i};
-        sem_wait(&sem_empty);
+        Pedido pedido = {rand() % 10 + 1, id * 100 + i};
+        sem_wait(&sem_vazio);
         pthread_mutex_lock(&mutex);
 
-        enqueue(order);
-        printf("Producer %d added order %d with priority %d\n", id, order.order_id, order.priority);
+        adicionar(pedido);
+        printf("Atendente %d adicionou pedido %d com prioridade %d\n", id, pedido.id_pedido, pedido.prioridade);
 
         pthread_mutex_unlock(&mutex);
-        sem_post(&sem_full);
-        sleep(rand() % 2 + 1);  // Simula tempo de criação de pedido
+        sem_post(&sem_cheio);
+        sleep(rand() % 2 + 1);  //tempo de criação de pedido
     }
     return NULL;
 }
 
-// Função da thread consumidora (chef processando pedidos)
-void* consumer(void* arg) {
+// chef preparando pedidos
+void* preparar(void* arg) {
     int id = *(int*)arg;
     while (1) {
-        sem_wait(&sem_full);
+        sem_wait(&sem_cheio);
         pthread_mutex_lock(&mutex);
 
-        if (count > 0) {
-            Order order = dequeue();
-            printf("Consumer %d processed order %d with priority %d\n", id, order.order_id, order.priority);
+        if (cont > 0) {
+            Pedido pedido = remover();
+            printf("Chef %d preparou pedido %d com prioridade %d\n", id, pedido.id_pedido, pedido.prioridade);
         }
 
         pthread_mutex_unlock(&mutex);
-        sem_post(&sem_empty);
-        sleep(rand() % 3 + 1);  // Simula tempo de processamento
+        sem_post(&sem_vazio);
+        sleep(rand() % 3 + 1);  // tempo de preparo
     }
     return NULL;
 }
 
 int main() {
-    pthread_t producers[2], consumers[2];
+    pthread_t atendentes[2], chefs[2];
     int ids[2] = {1, 2};
 
-    sem_init(&sem_empty, 0, MAX_PEDIDOS);
-    sem_init(&sem_full, 0, 0);
+    sem_init(&sem_vazio, 0, MAX_PEDIDOS);
+    sem_init(&sem_cheio, 0, 0);
 
-    // Criação de threads produtoras e consumidoras
+    //threads atendentes e chefs
     for (int i = 0; i < 2; i++) {
-        pthread_create(&producers[i], NULL, producer, &ids[i]);
-        pthread_create(&consumers[i], NULL, consumer, &ids[i]);
+        pthread_create(&atendentes[i], NULL, criar, &ids[i]);
+        pthread_create(&chefs[i], NULL, preparar, &ids[i]);
     }
 
-    // Aguarda threads produtoras finalizarem
+    // espera threads atendentes
     for (int i = 0; i < 2; i++) {
-        pthread_join(producers[i], NULL);
+        pthread_join(atendentes[i], NULL);
     }
 
-    // Finaliza consumidores após os produtores terminarem
+    // acaba chefs
     sleep(5);
     for (int i = 0; i < 2; i++) {
-        pthread_cancel(consumers[i]);
+        pthread_cancel(chefs[i]);
     }
 
-    sem_destroy(&sem_empty);
-    sem_destroy(&sem_full);
+    sem_destroy(&sem_vazio);
+    sem_destroy(&sem_cheio);
     pthread_mutex_destroy(&mutex);
 
     return 0;

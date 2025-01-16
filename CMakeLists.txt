@@ -9,7 +9,8 @@ set(SOURCES
         src/gestao-estoque.c
         src/reserva-mesa.c
         src/atendimento.c
-        src/pedidos-delivery.c)
+        src/pedidos-delivery.c
+        src/gestao-pedidos.c)
 
 add_executable(programacao_concorrente ${SOURCES})
 
