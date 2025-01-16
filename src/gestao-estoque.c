@@ -7,58 +7,58 @@
 #include <semaphore.h>
 #include <unistd.h>
 
-#define MAX_INGREDIENTS 100  // Capacidade máxima do estoque
-#define ITEM_TYPES 5         // Tipos diferentes de ingredientes
+#define MAX_INGREDIENTS 100  // capacidade máxima do estoque
+#define ITEM_TYPES 5         // tipos de ingredientes
 
-int stock[ITEM_TYPES];       // Estoque para cada tipo de ingrediente
+int estoque[ITEM_TYPES];       // estoque para cada tipo de ingrediente
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-sem_t sem_full[ITEM_TYPES];  // Semáforos para gerenciar consumo
-sem_t sem_empty[ITEM_TYPES]; // Semáforos para gerenciar reabastecimento
+sem_t sem_cheio[ITEM_TYPES];  // sem para consumo
+sem_t sem_vazio[ITEM_TYPES]; // sem para reabastecimento
 
-// Função para os chefs consumirem ingredientes
+// chefs consumindo ingredientes
 void* chef(void* arg) {
     int id = *(int*)arg;
     while (1) {
-        int item = rand() % ITEM_TYPES;  // Seleciona um tipo de ingrediente aleatoriamente
-        int amount = rand() % 5 + 1;    // Quantidade a ser consumida (1 a 5)
+        int item = rand() % ITEM_TYPES;  // escolhe um tipo de ingrediente aleatorio
+        int qtd = rand() % 5 + 1;    // qtd a ser consumida (até 5)
 
-        sem_wait(&sem_full[item]);      // Espera o ingrediente estar disponível
+        sem_wait(&sem_cheio[item]);      // Espera o ingrediente estar disponível
         pthread_mutex_lock(&mutex);     // Protege acesso ao estoque
 
-        if (stock[item] >= amount) {
-            stock[item] -= amount;
-            printf("Chef %d consumed %d of ingredient %d. Remaining: %d\n", id, amount, item, stock[item]);
+        if (estoque[item] >= qtd) {
+            estoque[item] -= qtd;
+            printf("Chef %d consumiu %d do ingrediente %d. Resta: %d\n", id, qtd, item, estoque[item]);
         } else {
-            printf("Chef %d could not consume %d of ingredient %d. Insufficient stock!\n", id, amount, item);
+            printf("Chef %d não conseguiu consumir %d do ingrediente %d. Estoque insuficiente!\n", id, qtd, item);
         }
 
         pthread_mutex_unlock(&mutex);
-        sem_post(&sem_empty[item]);    // Libera espaço para reabastecimento
-        sleep(rand() % 3 + 1);         // Simula tempo de consumo
+        sem_post(&sem_vazio[item]);    // libera espaço para reabastecimento
+        sleep(rand() % 3 + 1);         // tempo de consumo
     }
     return NULL;
 }
 
-// Função para os entregadores reabastecerem ingredientes
+// entregadores reabastecendo ingredientes
 void* delivery(void* arg) {
     int id = *(int*)arg;
     while (1) {
         int item = rand() % ITEM_TYPES;  // Seleciona um tipo de ingrediente aleatoriamente
-        int amount = rand() % 10 + 5;   // Quantidade a ser reabastecida (5 a 15)
+        int qtd = rand() % 10 + 5;   // Quantidade a ser reabastecida (5 a 15)
 
-        sem_wait(&sem_empty[item]);     // Espera espaço no estoque
-        pthread_mutex_lock(&mutex);     // Protege acesso ao estoque
+        sem_wait(&sem_vazio[item]);     // espera espaço no estoque
+        pthread_mutex_lock(&mutex);     // pega acesso ao estoque
 
-        if (stock[item] + amount <= MAX_INGREDIENTS) {
-            stock[item] += amount;
-            printf("Deliverer %d replenished %d of ingredient %d. Total: %d\n", id, amount, item, stock[item]);
+        if (estoque[item] + qtd <= MAX_INGREDIENTS) {
+            estoque[item] += qtd;
+            printf("Entregador %d repôs %d do ingrediente %d. Total: %d\n", id, qtd, item, estoque[item]);
         } else {
-            printf("Deliverer %d could not replenish %d of ingredient %d. Stock full!\n", id, amount, item);
+            printf("Entregador %d não pode repor %d do igrediente %d. Estoque cheio!\n", id, estoque, item);
         }
 
         pthread_mutex_unlock(&mutex);
-        sem_post(&sem_full[item]);     // Libera ingrediente para consumo
-        sleep(rand() % 5 + 1);         // Simula tempo de entrega
+        sem_post(&sem_cheio[item]);     // libera ingrediente para consumo
+        sleep(rand() % 5 + 1);         // tempo de entrega
     }
     return NULL;
 }
@@ -68,33 +68,29 @@ int main() {
     int chef_ids[3] = {1, 2, 3};
     int deliverer_ids[2] = {1, 2};
 
-    // Inicializa estoque e semáforos
+    // estoque e semáforos
     for (int i = 0; i < ITEM_TYPES; i++) {
-        stock[i] = rand() % (MAX_INGREDIENTS / 2); // Estoque inicial aleatório
-        sem_init(&sem_full[i], 0, stock[i]);      // Quantidade inicial de itens disponíveis
-        sem_init(&sem_empty[i], 0, MAX_INGREDIENTS - stock[i]); // Espaço restante
+        estoque[i] = rand() % (MAX_INGREDIENTS / 2); // estoque inicial aleatório
+        sem_init(&sem_cheio[i], 0, estoque[i]);      // qtd inicial de itens disponíveis
+        sem_init(&sem_vazio[i], 0, MAX_INGREDIENTS - estoque[i]); // restante
     }
 
-    // Cria threads de chefs e entregadores
+    // threads de chefs e entregadores
     for (int i = 0; i < 3; i++) {
         pthread_create(&chefs[i], NULL, chef, &chef_ids[i]);
     }
     for (int i = 0; i < 2; i++) {
         pthread_create(&deliverers[i], NULL, delivery, &deliverer_ids[i]);
     }
-
-    // Espera as threads (nunca termina neste exemplo)
     for (int i = 0; i < 3; i++) {
-        pthread_join(chefs[i], NULL);
+        pthread_join(chefs[i], NULL);// não termina
     }
     for (int i = 0; i < 2; i++) {
         pthread_join(deliverers[i], NULL);
     }
-
-    // Destrói os semáforos
     for (int i = 0; i < ITEM_TYPES; i++) {
-        sem_destroy(&sem_full[i]);
-        sem_destroy(&sem_empty[i]);
+        sem_destroy(&sem_cheio[i]);
+        sem_destroy(&sem_vazio[i]);
     }
     pthread_mutex_destroy(&mutex);
 

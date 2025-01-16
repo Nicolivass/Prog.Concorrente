@@ -7,7 +7,7 @@
 
 #include <pthread.h>
 
-// Estruturas e funções públicas
+// struct & funções públicas
 typedef struct {
     int *pedidos;
     int capacidade;

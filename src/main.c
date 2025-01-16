@@ -8,8 +8,6 @@
 #include "gestao-pedidos.h"
 #include "gestao-estoque.h"
 #include "reserva-mesa.h"
-#include "atendimento.h"
-#include "pedidos-delivery.h"
 
 // Definindo o número máximo de threads para cada subsistema
 #define NUM_THREADS 5

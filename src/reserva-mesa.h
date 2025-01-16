@@ -7,14 +7,14 @@
 
 #include <pthread.h>
 
-// Estrutura que representa a reserva de mesas
+// struct de reserva de mesas
 typedef struct {
-    int *mesas;           // Array de mesas (1 = ocupada, 0 = disponível)
-    int num_mesas;        // Total de mesas
-    pthread_mutex_t mutex; // Mutex para garantir que a mesa não seja reservada simultaneamente
+    int *mesas;           // array de mesas (1 = ocupada, 0 = disponível)
+    int num_mesas;        // total de mesas
+    pthread_mutex_t mutex; // mutex da reserva da mesa
 } ReservaMesas;
 
-// Funções para manipulação das reservas
+// manipulação das reservas
 void inicializar_reservas(ReservaMesas *reservas, int num_mesas);
 int reservar_mesa(ReservaMesas *reservas, int mesa_id);
 void liberar_mesa(ReservaMesas *reservas, int mesa_id);
