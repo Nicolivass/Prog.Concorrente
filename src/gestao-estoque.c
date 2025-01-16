@@ -51,7 +51,7 @@ void* delivery(void* arg) {
 
         if (estoque[item] + qtd <= MAX_INGREDIENTS) {
             estoque[item] += qtd;
-            printf("Entregador %d repôs %d do ingrediente %d. Total: %d\n", id, qtd, item, estoque[item]);
+            printf("Entregador %d repos %d do ingrediente %d. Total: %d\n", id, qtd, item, estoque[item]);
         } else {
             printf("Entregador %d não pode repor %d do igrediente %d. Estoque cheio!\n", id, estoque, item);
         }

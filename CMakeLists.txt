@@ -4,10 +4,7 @@ project(programacao_concorrente C)
 set(CMAKE_C_STANDARD 11)
 
 set(SOURCES
-        src/main.c
-        src/gestao-pedidos.c
-        src/gestao-estoque.c
-        src/reserva-mesa.c)
+        src/gestao-estoque.c)
 
 add_executable(programacao_concorrente ${SOURCES})
 

@@ -24,11 +24,11 @@ void* cliente(void* arg) {
                 mesas[mesa] = 1;  // reserva a mesa
                 printf("Cliente %d reservou a mesa %d com sucesso!\n", id, mesa);
             } else {
-                printf("Cliente %d não conseguiu reservar a mesa %d. Já está ocupada.\n", id, mesa);
+                printf("Cliente %d não conseguiu reservar a mesa %d. Ja está ocupada.\n", id, mesa);
             }
             pthread_mutex_unlock(&mutex_mesas[mesa]);  // desbloqueia o mutex da mesa
         } else {
-            printf("Cliente %d não conseguiu acessar a mesa %d. Já está sendo acessada.\n", id, mesa);
+            printf("Cliente %d não conseguiu acessar a mesa %d. Ja está sendo acessada.\n", id, mesa);
         }
 
         sleep(rand() % 3 + 1);  // espera pra tentar de novo

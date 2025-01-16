@@ -1,85 +1,75 @@
 //
 // Created by nicjl on 13/01/2025.
 //
+
+
+//src/main.c
+//src/gestao-pedidos.c
+//src/gestao-estoque.c
+//src/reserva-mesa.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <unistd.h>
-#include "gestao-pedidos.h"
 #include "gestao-estoque.h"
+#include "gestao-pedidos.h"
 #include "reserva-mesa.h"
 
-// Definindo o número máximo de threads para cada subsistema
-#define NUM_THREADS 5
+#define TOTAL_CLIENTES 5
+#define MAX_PEDIDOS 10
 
-// Recursos compartilhados globais
-FilaPedidos fila_pedidos;           // Para pedidos prontos
-int estoque[NUM_INGREDIENTES];      // Para controle de estoque
-int mesas_disponiveis[NUM_MESAS];   // Para reserva de mesas
-FilaAtendimento filas_atendentes[NUM_ATENDENTES]; // Para atendimento multi-fila
-int entregadores_disponiveis[NUM_ENTREGADORES];   // Para entregadores
-
-pthread_mutex_t mutex_estoque;       // Protege o estoque
-pthread_mutex_t mutex_mesas;         // Protege as mesas
-pthread_mutex_t mutex_entregadores;  // Protege entregadores
-
-// Função para inicializar todos os módulos de forma centralizada
-void inicializa_sistemas() {
-    inicializa_fila(&fila_pedidos, MAX_PEDIDOS);
-    inicializa_estoque(estoque, NUM_INGREDIENTES);
-    inicializa_mesas(mesas_disponiveis, NUM_MESAS);
-    inicializa_filas_atendimento(filas_atendentes, NUM_ATENDENTES);
-    inicializa_entregadores(entregadores_disponiveis, NUM_ENTREGADORES);
-
-    pthread_mutex_init(&mutex_estoque, NULL);
-    pthread_mutex_init(&mutex_mesas, NULL);
-    pthread_mutex_init(&mutex_entregadores, NULL);
+//iniciar os módulos
+void* iniciar_estoque(void* arg) {
+    ControleEstoque* estoque = (ControleEstoque*)arg;
+    inicializar_estoque(estoque, 5);  // inicia estoque com os tipos de ingredientes
+    return NULL;
 }
 
-// Função para destruir todos os módulos após o término
-void destruir_sistemas() {
-    destruir_fila(&fila_pedidos);
-    pthread_mutex_destroy(&mutex_estoque);
-    pthread_mutex_destroy(&mutex_mesas);
-    pthread_mutex_destroy(&mutex_entregadores);
+void* iniciar_pedidos(void* arg) {
+    FilaPedidos* fila = (FilaPedidos*)arg;
+    inicializa_fila(fila, MAX_PEDIDOS);  // Inicializa a fila de pedidos
+    return NULL;
 }
 
-// Função para criar as threads para cada subsistema
-void criar_threads(pthread_t *threads, int *ids) {
-    pthread_create(&threads[0], NULL, gestao_pedidos, (void*)&ids[0]);
-    pthread_create(&threads[1], NULL, gestao_estoque, (void*)&ids[1]);
-    pthread_create(&threads[2], NULL, reserva_mesa, (void*)&ids[2]);
-    pthread_create(&threads[3], NULL, atendimento, (void*)&ids[3]);
-    pthread_create(&threads[4], NULL, pedidos_delivery, (void*)&ids[4]);
+void* iniciar_reservas(void* arg) {
+    ReservaMesas* reservas = (ReservaMesas*)arg;
+    inicializar_reservas(reservas, 10);  // Inicializa o sistema de reservas de mesas
+    return NULL;
 }
 
 int main() {
-    pthread_t threads[NUM_THREADS]; // Array de threads
-    int ids[NUM_THREADS];           // Array de IDs para as threads
+    pthread_t clientes[TOTAL_CLIENTES];
+    int ids_clientes[TOTAL_CLIENTES];
+    ControleEstoque estoque;
+    FilaPedidos fila_pedidos;
+    ReservaMesas reservas;
 
-    // Inicializa os subsistemas
-    inicializa_sistemas();
+    // Inicializa as estruturas necessárias para os módulos
+    pthread_t estoque_thread, pedidos_thread, reservas_thread;
+    pthread_create(&estoque_thread, NULL, iniciar_estoque, &estoque);
+    pthread_create(&pedidos_thread, NULL, iniciar_pedidos, &fila_pedidos);
+    pthread_create(&reservas_thread, NULL, iniciar_reservas, &reservas);
 
-    // Cria as threads para os subsistemas
-    for (int i = 0; i < NUM_THREADS; i++) {
-        ids[i] = i; // Passa o índice como ID
-    }
-    criar_threads(threads, ids);
-
-    // Simula a chegada de novos pedidos periodicamente
-    for (int i = 0; i < 50; i++) {
-        sleep(1);
-        printf("Novo pedido criado: %d\n", i + 1);
-        adicionar_pedido(&fila_pedidos, i + 1);
-    }
-
-    // Aguarda as threads (se apropriado)
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
+    // threads para clientes (simulação de interação com o restaurante)
+    for (int i = 0; i < TOTAL_CLIENTES; i++) {
+        ids_clientes[i] = i + 1;
+        pthread_create(&clientes[i], NULL, cliente, &ids_clientes[i]);
     }
 
-    // Libera recursos
-    destruir_sistemas();
+    // termina estoque, pedidos e reservas
+    pthread_join(estoque_thread, NULL);
+    pthread_join(pedidos_thread, NULL);
+    pthread_join(reservas_thread, NULL);
+
+    // threads nunca terminam
+    for (int i = 0; i < TOTAL_CLIENTES; i++) {
+        pthread_join(clientes[i], NULL);
+    }
+
+    // destroi
+    destruir_estoque(&estoque);
+    destruir_fila(&fila_pedidos);
+    destruir_reservas(&reservas);
 
     return 0;
 }

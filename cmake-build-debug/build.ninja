@@ -49,38 +49,8 @@ cmake_ninja_workdir = C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/progra
 
 build cmake_object_order_depends_target_programacao_concorrente: phony || CMakeFiles/programacao_concorrente.dir
 
-build CMakeFiles/programacao_concorrente.dir/src/main.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/main.c || cmake_object_order_depends_target_programacao_concorrente
-  DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\main.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
-  OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
-  OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
-
-build CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/gestao-pedidos.c || cmake_object_order_depends_target_programacao_concorrente
-  DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\gestao-pedidos.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
-  OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
-  OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
-
 build CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/gestao-estoque.c || cmake_object_order_depends_target_programacao_concorrente
   DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\gestao-estoque.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
-  OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
-  OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
-
-build CMakeFiles/programacao_concorrente.dir/src/reserva-mesa.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/reserva-mesa.c || cmake_object_order_depends_target_programacao_concorrente
-  DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\reserva-mesa.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
-  OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
-  OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
-
-build CMakeFiles/programacao_concorrente.dir/src/atendimento.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/atendimento.c || cmake_object_order_depends_target_programacao_concorrente
-  DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\atendimento.c.obj.d
-  FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
-  OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
-  OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
-
-build CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj: C_COMPILER__programacao_concorrente_unscanned_Debug C$:/Users/nicjl/OneDrive/Documentos/desenvolvimento/programacao-concorrente/src/pedidos-delivery.c || cmake_object_order_depends_target_programacao_concorrente
-  DEP_FILE = CMakeFiles\programacao_concorrente.dir\src\pedidos-delivery.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always -Wall -pthread
   OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
   OBJECT_FILE_DIR = CMakeFiles\programacao_concorrente.dir\src
@@ -93,7 +63,7 @@ build CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj: C_COMPI
 #############################################
 # Link the executable programacao_concorrente.exe
 
-build programacao_concorrente.exe: C_EXECUTABLE_LINKER__programacao_concorrente_Debug CMakeFiles/programacao_concorrente.dir/src/main.c.obj CMakeFiles/programacao_concorrente.dir/src/gestao-pedidos.c.obj CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj CMakeFiles/programacao_concorrente.dir/src/reserva-mesa.c.obj CMakeFiles/programacao_concorrente.dir/src/atendimento.c.obj CMakeFiles/programacao_concorrente.dir/src/pedidos-delivery.c.obj
+build programacao_concorrente.exe: C_EXECUTABLE_LINKER__programacao_concorrente_Debug CMakeFiles/programacao_concorrente.dir/src/gestao-estoque.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\programacao_concorrente.dir
